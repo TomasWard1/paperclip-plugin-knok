@@ -10,9 +10,125 @@ const manifest: PaperclipPluginManifestV1 = {
   categories: ["automation"],
   capabilities: [
     "events.subscribe",
+    "http.outbound",
     "plugin.state.read",
-    "plugin.state.write"
+    "plugin.state.write",
+    "secrets.read-ref",
+    "instance.settings.register"
   ],
+  instanceConfigSchema: {
+    type: "object",
+    properties: {
+      knokEndpoint: {
+        type: "string",
+        title: "Knok Endpoint",
+        description: "URL to the Knok HTTP server (e.g. http://100.x.x.x:9999)",
+        format: "uri"
+      },
+      knokTokenRef: {
+        type: "string",
+        title: "Knok Auth Token",
+        description: "Secret reference for the Knok authentication token"
+      },
+      defaultLevel: {
+        type: "string",
+        title: "Default Notification Level",
+        description: "Default urgency level for notifications",
+        enum: ["whisper", "nudge", "knock", "break"],
+        default: "nudge"
+      },
+      events: {
+        type: "object",
+        title: "Event Subscriptions",
+        description: "Toggle which events trigger notifications",
+        properties: {
+          approvalCreated: {
+            type: "boolean",
+            title: "Approval Created",
+            default: true
+          },
+          approvalDecided: {
+            type: "boolean",
+            title: "Approval Decided",
+            default: false
+          },
+          agentRunFailed: {
+            type: "boolean",
+            title: "Agent Run Failed",
+            default: true
+          },
+          agentRunFinished: {
+            type: "boolean",
+            title: "Agent Run Finished",
+            default: false
+          },
+          agentStatusChanged: {
+            type: "boolean",
+            title: "Agent Status Changed",
+            default: false
+          },
+          issueCreated: {
+            type: "boolean",
+            title: "Issue Created",
+            default: false
+          },
+          issueUpdated: {
+            type: "boolean",
+            title: "Issue Updated",
+            default: false
+          },
+          issueCommentCreated: {
+            type: "boolean",
+            title: "Issue Comment Created",
+            default: true
+          }
+        },
+        additionalProperties: false
+      },
+      levelOverrides: {
+        type: "object",
+        title: "Level Overrides",
+        description: "Override the default notification level per event type",
+        properties: {
+          approvalCreated: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          approvalDecided: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          agentRunFailed: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          agentRunFinished: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          agentStatusChanged: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          issueCreated: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          issueUpdated: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          },
+          issueCommentCreated: {
+            type: "string",
+            enum: ["whisper", "nudge", "knock", "break"]
+          }
+        },
+        additionalProperties: false
+      }
+    },
+    required: ["knokEndpoint", "knokTokenRef"],
+    additionalProperties: false
+  },
   entrypoints: {
     worker: "./dist/worker.js",
     ui: "./dist/ui"
@@ -20,9 +136,15 @@ const manifest: PaperclipPluginManifestV1 = {
   ui: {
     slots: [
       {
+        type: "instanceSettings",
+        id: "settings",
+        displayName: "Knok Settings",
+        exportName: "SettingsPanel"
+      },
+      {
         type: "dashboardWidget",
         id: "health-widget",
-        displayName: "Knok Notifications Health",
+        displayName: "Knok Notifications",
         exportName: "DashboardWidget"
       }
     ]
