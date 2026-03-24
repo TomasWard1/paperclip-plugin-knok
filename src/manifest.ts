@@ -14,7 +14,8 @@ const manifest: PaperclipPluginManifestV1 = {
     "plugin.state.read",
     "plugin.state.write",
     "secrets.read-ref",
-    "instance.settings.register"
+    "instance.settings.register",
+    "ui.dashboardWidget.register"
   ],
   instanceConfigSchema: {
     type: "object",
