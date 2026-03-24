@@ -1,6 +1,6 @@
 # paperclip-plugin-knok
 
-Push desktop notifications via [Knok](https://github.com/tomasward/knok) when [Paperclip](https://github.com/paperclipai/paperclip) inbox events occur.
+Push desktop notifications via [Knok](https://github.com/TomasWard1/knok) when [Paperclip](https://github.com/paperclipai/paperclip) inbox events occur.
 
 ## Features
 

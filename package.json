@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Push desktop notifications via Knok when inbox events occur",
-  "homepage": "https://github.com/tomasward/paperclip-plugin-knok#readme",
+  "homepage": "https://github.com/TomasWard1/paperclip-plugin-knok#readme",
   "bugs": {
-    "url": "https://github.com/tomasward/paperclip-plugin-knok/issues"
+    "url": "https://github.com/TomasWard1/paperclip-plugin-knok/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tomasward/paperclip-plugin-knok.git"
+    "url": "https://github.com/TomasWard1/paperclip-plugin-knok.git"
   },
   "scripts": {
     "build": "node ./esbuild.config.mjs",
