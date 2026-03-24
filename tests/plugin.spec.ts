@@ -264,7 +264,7 @@ describe("Knok plugin worker", () => {
         const harness = createHarness();
         await plugin.definition.setup(harness.ctx);
 
-        await harness.emit(eventType, {}, { entityId: "test_1" });
+        await harness.emit(eventType as "issue.created", {}, { entityId: "test_1" });
 
         const body = JSON.parse(
           (harness.ctx.http.fetch as ReturnType<typeof vi.fn>).mock.calls[0][1].body,
@@ -351,7 +351,7 @@ describe("Knok plugin worker", () => {
       await harness.emit("issue.created", { title: "test" }, {});
       await harness.emit("issue.created", { title: "test2" }, {});
 
-      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" });
+      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" }) as { totalSent: number; totalFailed: number; lastNotificationAt: string | null };
       expect(stats.totalSent).toBe(2);
       expect(stats.totalFailed).toBe(0);
       expect(stats.lastNotificationAt).toBeTruthy();
@@ -366,7 +366,7 @@ describe("Knok plugin worker", () => {
 
       await harness.emit("issue.created", { title: "test" }, {});
 
-      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" });
+      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" }) as { totalSent: number; totalFailed: number; lastNotificationAt: string | null };
       expect(stats.totalSent).toBe(0);
       expect(stats.totalFailed).toBe(1);
     });
@@ -378,7 +378,7 @@ describe("Knok plugin worker", () => {
 
       await harness.emit("issue.created", { title: "test" }, {});
 
-      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" });
+      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" }) as { totalSent: number; totalFailed: number; lastNotificationAt: string | null };
       expect(stats.totalSent).toBe(0);
       expect(stats.totalFailed).toBe(1);
     });
@@ -394,7 +394,7 @@ describe("Knok plugin worker", () => {
       const recent = harness.getState({
         scopeKind: "instance",
         stateKey: "recentNotifications",
-      });
+      }) as { eventType: string; title: string; timestamp: string; success: boolean }[];
       expect(recent).toHaveLength(1);
       expect(recent[0].eventType).toBe("issue.created");
       expect(recent[0].title).toBe("New Issue");
@@ -413,7 +413,7 @@ describe("Knok plugin worker", () => {
       const recent = harness.getState({
         scopeKind: "instance",
         stateKey: "recentNotifications",
-      });
+      }) as { eventType: string; title: string; timestamp: string; success: boolean }[];
       expect(recent).toHaveLength(10);
     });
 
@@ -488,7 +488,7 @@ describe("Knok plugin worker", () => {
       const recent = harness.getState({
         scopeKind: "instance",
         stateKey: "recentNotifications",
-      });
+      }) as { eventType: string; title: string; timestamp: string; success: boolean }[];
       expect(recent).toHaveLength(1);
       expect(recent[0].eventType).toBe("test");
     });
@@ -505,7 +505,7 @@ describe("Knok plugin worker", () => {
       await harness.emit("agent.run.failed", { error: "boom" }, {});
       await harness.emit("issue.comment.created", { authorName: "Bob" }, {});
 
-      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" });
+      const stats = harness.getState({ scopeKind: "instance", stateKey: "stats" }) as { totalSent: number; totalFailed: number; lastNotificationAt: string | null };
       expect(stats.totalFailed).toBe(3);
     });
 

@@ -140,11 +140,11 @@ const plugin = definePlugin({
           body: JSON.stringify(payload),
         });
 
-        const stats: Stats = (await ctx.state.get(STATS_SCOPE)) ?? {
+        const stats = ((await ctx.state.get(STATS_SCOPE)) ?? {
           totalSent: 0,
           totalFailed: 0,
           lastNotificationAt: null,
-        };
+        }) as Stats;
 
         if (res.ok) {
           stats.totalSent += 1;
@@ -163,11 +163,11 @@ const plugin = definePlugin({
         });
         return { ok: false };
       } catch (err) {
-        const stats: Stats = (await ctx.state.get(STATS_SCOPE)) ?? {
+        const stats = ((await ctx.state.get(STATS_SCOPE)) ?? {
           totalSent: 0,
           totalFailed: 0,
           lastNotificationAt: null,
-        };
+        }) as Stats;
         stats.totalFailed += 1;
         await ctx.state.set(STATS_SCOPE, stats);
         ctx.logger.error("Knok alert error", { error: String(err) });
@@ -178,8 +178,7 @@ const plugin = definePlugin({
     // -- helper: track recent notification -----------------------------------
 
     async function trackRecent(record: NotificationRecord): Promise<void> {
-      const recent: NotificationRecord[] =
-        (await ctx.state.get(RECENT_SCOPE)) ?? [];
+      const recent = ((await ctx.state.get(RECENT_SCOPE)) ?? []) as NotificationRecord[];
       recent.unshift(record);
       if (recent.length > 10) recent.length = 10;
       await ctx.state.set(RECENT_SCOPE, recent);
@@ -357,11 +356,11 @@ const plugin = definePlugin({
     // -- data handlers -------------------------------------------------------
 
     ctx.data.register("health", async () => {
-      const stats: Stats = (await ctx.state.get(STATS_SCOPE)) ?? {
+      const stats = ((await ctx.state.get(STATS_SCOPE)) ?? {
         totalSent: 0,
         totalFailed: 0,
         lastNotificationAt: null,
-      };
+      }) as Stats;
       return {
         status: "ok",
         totalSent: stats.totalSent,
@@ -371,8 +370,7 @@ const plugin = definePlugin({
     });
 
     ctx.data.register("recent-notifications", async () => {
-      const recent: NotificationRecord[] =
-        (await ctx.state.get(RECENT_SCOPE)) ?? [];
+      const recent = ((await ctx.state.get(RECENT_SCOPE)) ?? []) as NotificationRecord[];
       return recent;
     });
 

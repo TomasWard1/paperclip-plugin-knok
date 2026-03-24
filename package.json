@@ -2,32 +2,56 @@
   "name": "paperclip-plugin-knok",
   "version": "0.1.0",
   "type": "module",
-  "private": true,
   "description": "Push desktop notifications via Knok when inbox events occur",
+  "homepage": "https://github.com/tomasward/paperclip-plugin-knok#readme",
+  "bugs": {
+    "url": "https://github.com/tomasward/paperclip-plugin-knok/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomasward/paperclip-plugin-knok.git"
+  },
   "scripts": {
     "build": "node ./esbuild.config.mjs",
     "build:rollup": "rollup -c",
     "dev": "node ./esbuild.config.mjs --watch",
     "dev:ui": "paperclip-plugin-dev-server --root . --ui-dir dist/ui --port 4177",
     "test": "vitest run --config ./vitest.config.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "node ./esbuild.config.mjs"
   },
   "paperclipPlugin": {
     "manifest": "./dist/manifest.js",
     "worker": "./dist/worker.js",
     "ui": "./dist/ui/"
   },
+  "files": [
+    "dist",
+    ".paperclip-sdk",
+    "esbuild.config.mjs",
+    "rollup.config.mjs"
+  ],
   "keywords": [
     "paperclip",
-    "plugin",
+    "paperclip-plugin",
+    "knok",
+    "notifications",
+    "desktop-notifications",
     "automation"
   ],
   "author": "Tomas Ward",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "pnpm": {
     "overrides": {
       "@paperclipai/shared": "file:.paperclip-sdk/paperclipai-shared-0.3.1.tgz"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
   "devDependencies": {
     "@paperclipai/shared": "file:.paperclip-sdk/paperclipai-shared-0.3.1.tgz",

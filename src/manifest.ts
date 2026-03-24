@@ -136,7 +136,7 @@ const manifest: PaperclipPluginManifestV1 = {
   ui: {
     slots: [
       {
-        type: "instanceSettings",
+        type: "settingsPage",
         id: "settings",
         displayName: "Knok Settings",
         exportName: "SettingsPanel"
