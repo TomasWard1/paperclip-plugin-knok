@@ -1,6 +1,6 @@
 {
   "name": "paperclip-plugin-knok",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Push desktop notifications via Knok when inbox events occur",
   "homepage": "https://github.com/TomasWard1/paperclip-plugin-knok#readme",

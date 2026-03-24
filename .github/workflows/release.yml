@@ -25,6 +25,9 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      - name: Update npm for trusted publishing
+        run: npm install -g npm@latest
+
       - run: pnpm install --frozen-lockfile
 
       - name: Typecheck
@@ -43,9 +46,7 @@ jobs:
           test -d dist/ui
 
       - name: Publish to npm
-        run: pnpm publish --no-git-checks --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
